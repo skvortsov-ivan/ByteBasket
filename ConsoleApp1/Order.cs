@@ -13,6 +13,7 @@ namespace Bytebasket
         public Customer Customer { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalPrice { get; set; } = 0;
+        public Delivery Delivery { get; set; }
 
 
         public Order(List<Product> products, Customer customer)
@@ -30,6 +31,11 @@ namespace Bytebasket
                 totalPrice += products[i].Price;
             }
             return totalPrice;
+        }
+
+        public void ProcessDelivery()
+        {
+            Delivery.HandleDelivery();
         }
         //// Methods for adding, removing, updating orders
         //public static void AddOrder(Order order)

@@ -27,7 +27,7 @@ namespace Bytebasket
             // Shop display + add items to cart:
             while (true)
             {
-                string[] displayOptions = { "Add new product", "Remove Product", "Checkout" };
+                string[] displayOptions = { "Add new product", "Remove Product", "Checkout", "Exit" };
                 
                 for (int i = 0; i < displayOptions.Length; i++)
                 {
@@ -52,6 +52,9 @@ namespace Bytebasket
                         Order order = new Order(shoppingCart, customer);
                         AddOrder<Order>(orders, order);
                         PrintOrder(order);
+                        shoppingCart.Clear();
+                        break;
+                    case 3:
                         return;
                 }
             }
@@ -97,18 +100,16 @@ namespace Bytebasket
 
             Console.WriteLine("What order would you like to remove?");
 
-            int index;
             string userInput = Console.ReadLine();
-            bool isNumber = int.TryParse(userInput, out index);
+            bool isNumber = int.TryParse(userInput, out int index);
 
-            if (isNumber && index < orders.Count && index >= 0)
+            if (isNumber && index < list.Count && index >= 0)
             {
-                orders.RemoveAt(index);
+                list.RemoveAt(index);
             }
-
             else
             {
-                Console.WriteLine($"You need to input a number between 0 - {orders.Count - 1}.");
+                Console.WriteLine($"You need to input a number between 0 till {list.Count - 1}.");
             }
         }
 
@@ -137,6 +138,32 @@ namespace Bytebasket
                 Console.WriteLine($"{product.Name} - {product.Price} SEK");
             }
             Console.WriteLine($"\nTotal Price: {order.TotalPrice}");
+        }
+
+        public static void ChooseDelivery(Order order)
+        {
+
+            string[] displayOptions = { "Standard Delivery", "Express Delivery" };
+
+            for (int i = 0; i < displayOptions.Length; i++)
+            {
+                Console.WriteLine($"[{i}]: {displayOptions[i]}");
+            }
+            Console.Write("Enter your choice: ");
+            string userInput = Console.ReadLine();
+            bool success = int.TryParse(userInput, out int userIndex);
+            switch (userIndex)
+            {
+                case 0:
+                    order.Delivery = new StandardDelivery();
+                    order.ProcessDelivery();
+                    break;
+
+                case 1:
+                    order.Delivery = new ExpressDelivery();
+                    order.ProcessDelivery();
+                    break;
+            }
         }
     }
 }

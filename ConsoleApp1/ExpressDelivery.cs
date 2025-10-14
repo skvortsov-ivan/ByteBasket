@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bytebasket
 {
-    internal class ExpressDelivery
+    public class ExpressDelivery : Delivery
     {
+        public override void HandleDelivery()
+        {
+            Thread.Sleep(1000);
+            Console.WriteLine("Standard delivery completed.");
+        }
     }
 }
