@@ -11,7 +11,9 @@ namespace Bytebasket
         public override void HandleDelivery()
         {
             Thread.Sleep(3000);
-            Console.WriteLine("Standard delivery completed.");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("\nStandard delivery completed.");
+            Console.ResetColor();
         }
     }
 }

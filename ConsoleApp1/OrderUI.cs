@@ -23,7 +23,7 @@ namespace Bytebasket
 
         public static void Menu()
         {
-            Console.WriteLine("Welcome to our shop");
+            Console.WriteLine("Welcome to our shop!\n");
             // Shop display + add items to cart:
             while (true)
             {
@@ -36,6 +36,8 @@ namespace Bytebasket
                 Console.Write("Enter your choice: ");
                 string userInput = Console.ReadLine();
                 bool success = int.TryParse(userInput, out int userIndex);
+                Console.WriteLine();
+
                 switch (userIndex)
                 {
                     case 0:
@@ -52,6 +54,7 @@ namespace Bytebasket
                         Order order = new Order(shoppingCart, customer);
                         AddOrder<Order>(orders, order);
                         PrintOrder(order);
+                        ChooseDelivery(order);
                         shoppingCart.Clear();
                         break;
                     case 3:
@@ -68,6 +71,7 @@ namespace Bytebasket
 
         public static Customer CreateCustomer()
         {
+            Console.WriteLine("Enter your details to continue with the order.");
             // Input of customer data
             Console.WriteLine("Please enter your full name:");
             string fullName = Console.ReadLine();
@@ -88,9 +92,9 @@ namespace Bytebasket
                 string displayItem = "";
                 if (list[i] is Order order)
                 {
-
                     displayItem = order.OrderId.ToString();
                 }
+
                 else if (list[i] is Product product)
                 {
                     displayItem = product.Name;
@@ -98,7 +102,7 @@ namespace Bytebasket
                 Console.WriteLine($"{i}: {displayItem}");
             }
 
-            Console.WriteLine("What order would you like to remove?");
+            Console.WriteLine("Which item would you like to remove?");
 
             string userInput = Console.ReadLine();
             bool isNumber = int.TryParse(userInput, out int index);
@@ -111,6 +115,7 @@ namespace Bytebasket
             {
                 Console.WriteLine($"You need to input a number between 0 till {list.Count - 1}.");
             }
+            Console.WriteLine();
         }
 
         public static void AddProduct()
@@ -120,29 +125,32 @@ namespace Bytebasket
             {
                 Console.WriteLine($"[{i}]: {availableProductList[i].Name} - ({availableProductList[i].Quantity}) cost {availableProductList[i].Price} SEK");
             }
-            Console.WriteLine("Which item would you like to purchase? Write 'checkout' if you want to exit.");
+            Console.Write("Which item would you like to purchase? ");
             string input = Console.ReadLine();
             if (int.TryParse(input, out int correctInput) && correctInput >= 0 && correctInput < availableProductList.Count && availableProductList[correctInput].Quantity >= 0)
             {
                 shoppingCart.Add(availableProductList[correctInput]);
                 availableProductList[correctInput].Quantity--;
             }
+            Console.WriteLine();
         }
 
         public static void PrintOrder(Order order)
         {
             // orderid, productlist, customer object, datetime, totalprice, 
-            Console.WriteLine($"Your Order\nDate: {order.OrderDate}\nItems in cart: {order.Products.Count}\n");
+            Console.WriteLine($"\nYour Order\nDate: {order.OrderDate}\nItems in cart: {order.Products.Count}\n");
             foreach (Product product in order.Products)
             {
                 Console.WriteLine($"{product.Name} - {product.Price} SEK");
             }
             Console.WriteLine($"\nTotal Price: {order.TotalPrice}");
+            Console.WriteLine();
+            
         }
 
         public static void ChooseDelivery(Order order)
         {
-
+            Console.WriteLine("Choose type of delivery.");
             string[] displayOptions = { "Standard Delivery", "Express Delivery" };
 
             for (int i = 0; i < displayOptions.Length; i++)
@@ -152,6 +160,7 @@ namespace Bytebasket
             Console.Write("Enter your choice: ");
             string userInput = Console.ReadLine();
             bool success = int.TryParse(userInput, out int userIndex);
+
             switch (userIndex)
             {
                 case 0:
@@ -164,6 +173,8 @@ namespace Bytebasket
                     order.ProcessDelivery();
                     break;
             }
+            Console.ReadLine();
+            Console.WriteLine();
         }
     }
 }
